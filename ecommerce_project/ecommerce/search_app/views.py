@@ -7,7 +7,7 @@ from django.db.models import Q
 
 def SearchResult(request):
     if request.GET.get('key')=='':
-        return redirect('/')
+        return redirect('/shop/')
     query = request.GET.get('key').upper()
     products = Product.objects.all().filter(Q(name__contains=query) | Q(description__contains=query))
     return render(request, 'search.html', {'query': query, 'products': products})
