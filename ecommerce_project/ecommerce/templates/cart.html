@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    This the Cart Page, please review your Items and place the order.
+{% endblock %}
+
+{% block title %}
+    Cart-Family Mart Online store
+{% endblock %}
+
+{% block content %}
+{% if not cart_items %}
+    <div>
+        <div class="text-center">
+            <br>
+            <h1 class="text-center my_title">Your Shopping Cart is empty</h1>
+            <br>
+            <p class="=text-center">
+                please click <a href="{% url 'shop:allProdCat' %}">Here</a> to continue shopping.
+            </p>
+
+        </div>
+    </div>
+{% else %}
+    <div>
+        <div class="text-center">
+            <br>
+            <h1 class="text-center my_title">You Shopping Cart</h1>
+            <br>
+
+        </div>
+    </div>
+
+
+    <div class="row mx_auto">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+                    <tr class="text-center">
+                        <th colspan="5">Your items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in cart_items %}
+                        <tr>
+                            <td>
+                            <a href="i.product.get_absolute_url"><img src="{{i.product.image.url}}" alt="product_image" class="float-left rounded custom_image" height="120" width="70"> </a>
+                            </td>
+                            <td class="text-left">
+                                {{i.product.name}}
+                                <br>
+                                SKU: {{i.product.id}}
+                                <br>
+                                Price: Rs. {{i.product.price}}
+                                <br>
+                                Qty: {{i.nos}} Nos
+                            </td>
+                            <td>
+                                Rs. {{i.sub_total}}
+                            </td>
+                            {% if i.nos < i.product.stock %}
+                                <td>
+                                     <a href="{% url 'cart:add_cart' i.product.id %}" class="custom_a"><i class="fa fa-plus custom_icon"></i></a>
+                                    &nbsp;&nbsp;&nbsp;<a href="{% url 'cart:cart_remove' i.product.id %}" class="custom_a"><i class="fa fa-minus custom_icon"></i></a>
+                                    &nbsp;&nbsp;&nbsp;<a href="{% url 'cart:cart_full_remove' i.product.id %}" class="custom_a"><i class="fa fa-trash custom_icon"></i></a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;<a href="{% url 'cart:cart_remove' i.product.id %}" class="custom_a"><i class="fa fa-minus custom_icon"></i></a>
+                                    &nbsp;&nbsp;&nbsp;<a href="{% url 'cart:cart_full_remove' i.product.id %}" class="custom_a"><i class="fa fa-trash custom_icon"></i></a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+                    <tr class="text-center">
+                        <th>
+                            Checkout
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  class="text-center">
+                        <td>
+                            Please review your shopping cart items before proceeding with order payment.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                           <h1>Price Details</h1>
+                            <h3>Total: {{total}}</h3>
+                            <div class="mx-auto text-center">
+                                <a href="" class="btn btn-primary btn-block my_custom_button">Proceed to checkout</a>
+                                <a href="{% url 'shop:allProdCat' %}" class="btn btn-secondary btn-block my_custom_button">Continue shopping</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    
+{% endif %}
+{% endblock %}

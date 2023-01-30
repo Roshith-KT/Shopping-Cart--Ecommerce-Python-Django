@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if category %}
+        {{category.description|truncatewords:155}}
+    {% else %}
+        Welcome to Family Mart Online store. Explore our collections and shop online.
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{category.name}}---Family Mart Online store
+    {% else %}
+        See our new collections.
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx_auto text-center">
+                    <h1><a class="cat_n_prod_page_heading" href="{% url 'shop:allProdCat' %}">Our product collection</a></h1>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if category %}
+        <div class="mx_auto">
+            <img class="my_image" src="{{category.image.url}}" height="400" width="2025" alt="{{category.name}}">
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center my_title">{{category.name}}</h1>
+            <p class="text-justify">{{category.description}}</p>
+        </div>
+    {% else %}
+        <div>
+            <img class="my_image my_image_padding" src="{% static 'images/banner.png' %}" alt="banner_image" width="2025" height="400">
+        </div>
+        <br>
+        <br>
+        <div>
+            <h1 class="cat_n_prod_page_heading text-center">Our product collections</h1>
+            <p class="text-justify">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source</p>
+        </div>
+        <br>
+    {% endif %}
+    <div class="container">
+        <div class="row mx_auto">
+            {% for product in products.object_list %}
+                <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+                    <div class="card text-center" style="min-width:18rem;">
+                        <a href="{{product.get_url}}"><img class="card-img-top my_pimage" src="{{product.image.url}}" alt="{{product.name}}" height="450"></a>
+                        <div class="card-body">
+                            <h4>{{product.name}}</h4>
+                            <p>Rs.{{product.price}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mx_auto">
+            {% if products.paginator.num_pages > 1 %}
+
+            <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                    <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <br>
+    </div>
+    <br>
+{% endblock %}
+
+
+<!--<div class="card" style="width: 14rem;">-->
+<!--                                        <img src="{{product.image.url}}" class="card-img-top" alt="{{product.name}}" height="450" width="350">-->
+<!--                                        <div class="card-body">-->
+
+<!--                                        </div>-->
+<!--                                    </div>-->
